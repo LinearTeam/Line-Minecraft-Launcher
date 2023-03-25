@@ -1,1 +1,1 @@
-# Line-Minecraft-Launcher-GUI-and-Console-
+# Line-Minecraft-Launcher
