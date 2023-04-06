@@ -32,7 +32,7 @@ def verify():
     header = {
         "Content-Type": "application/x-www-form-urlencoded"
     }#请求头
-
+#A
     res = post(url=url, data=data, headers=header)
     dic = loads(res.text)
     access_token = dic["access_token"]
