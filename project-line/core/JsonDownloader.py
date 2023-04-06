@@ -37,3 +37,4 @@ if not os.path.exists(main_path + "\\.minecraft\\versions"):
     scot()
 else:
     scot()
+#A
