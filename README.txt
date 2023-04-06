@@ -1,9 +1,5 @@
 # Line-Minecraft-Launcher
 
-IF YOU ARE A CHINESE,PLEASE JUMP TO THE CHINESE README!!!
-IF YOU ARE A CHINESE,PLEASE JUMP TO THE CHINESE README!!!
-IF YOU ARE A CHINESE,PLEASE JUMP TO THE CHINESE README!!!
-
 The next,I'll show you,What the files do:
 Lfacer:visual Graphics User Interface(GUI) files
   |UIModule:UI files
