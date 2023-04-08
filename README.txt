@@ -15,4 +15,4 @@ Console.bat:The Main program of console
 
 PAY ATTENTION!!!!!!!!!!!!!!
 PLEASE create a folder called ".minecraft" in project-line
-MicrosoftLogin block not available!!!
+MicrosoftLogin module not available!!!
