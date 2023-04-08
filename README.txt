@@ -14,5 +14,5 @@ core:The core of all the launcher
 Console.bat:The Main program of console
 
 PAY ATTENTION!!!!!!!!!!!!!!
-1.FileVerifier block has some problems still unfixed,please invoke carefully!!!
-2.MicrosoftLogin block not available!!!
+PLEASE create a folder called ".minecraft" in project-line
+MicrosoftLogin block not available!!!
