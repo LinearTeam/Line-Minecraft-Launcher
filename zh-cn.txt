@@ -1,6 +1,6 @@
 # Line Minecraft Launcher
 
-接下来，我会给你展示各个文件夹及其所包含的文件之用：
+接下来，我会说明各个文件夹及其所包含的文件之用：
 Lfacer:可视化图形界面文件
   |UIModule:UI 文件
   |Main.py:GUI 程序启动器
@@ -14,5 +14,6 @@ core:启动器核心
 Console.bat:终端主程序
 
 请特别特别特别注意!!!!!!!!!!!!!!
-1.FileVerifier模块仍有误!!!
+1.FileVerifier模块仍有download模块不可用，除外，其他模块中的bug已经修复!!!
 2.MicrosoftLogin模块暂时不可用!!!
+3.请先创建一个.minecraft文件夹在project-line的根目录
