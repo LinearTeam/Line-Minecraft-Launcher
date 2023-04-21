@@ -7,7 +7,7 @@ from json import dumps
 from os import system
 from os import remove
 import sys
-import webbrowser#这个函数用于把指定的文件给删掉 
+import webbrowser
 import zipfile
 import MicrosoftLogin
 import time
