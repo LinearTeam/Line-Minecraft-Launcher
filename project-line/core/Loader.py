@@ -97,7 +97,6 @@ def verify(mcdir, version, javaw_path, maxmem):
         code = str("")
         for kind in range(begin, end):
             code += re_url[kind]#拼接
-        breakpoint()
         online(mcdir, version, javaw_path, maxmem, code, refreshtoken)
 
 def online(mcdir: str, version: str, javaw_path: str, maxmem: str, code, refreshtoken):#启动游戏
@@ -262,7 +261,7 @@ def offline(mcdir: str, version: str(), javaw_path: str(), maxmem: str(), userna
             mc_args = mc_args.replace("${game_directory}", mcdir)#mc路径
             mc_args = mc_args.replace("${assets_root}", mcdir + "\\assets")#资源文件路径
             mc_args = mc_args.replace("${assets_index_name}",dic["assetIndex"]["id"])#资源索引文件名称
-            mc_args = mc_args.replace("${auth_uuid}", "{}")#还没有写微软登录,所以uuid为空
+            mc_args = mc_args.replace("${auth_uuid}", "{}")#离线不填
             mc_args = mc_args.replace("${auth_access_token}", "{}")#同上
             mc_args = mc_args.replace("${clientid}", version)#客户端id
             mc_args = mc_args.replace("${auth_xuid}", "{}")#离线登录,不填
