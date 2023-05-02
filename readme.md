@@ -19,11 +19,11 @@
 #### 5.usernameg 游戏中的用户名，仅用于离线登录
 #### 6.usernamel 启动器终端用户名
 #### 7.version 启动版本（动态，可用版本将被列举其中
-#
+
+### FOLDER lfacer
+#### GUI文件及资源
+
 ### 另外，注意事宜如下：
-##### 本启动器的主程序暂未编写
-##### 不可启动Fabric/Forge moded的版本
-##### 要测试core中的模块，请更改mcdir,javaw,logincategory,version等文件中的信息
 ##### 请手动在.\project-line的根目录下创建.minecraft文件夹
 ##### 启动游戏暂不可用/23.5.2
 ##### GUI已添加测试版，但还无法正常使用
