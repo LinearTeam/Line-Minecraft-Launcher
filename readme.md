@@ -33,6 +33,7 @@
 ##### 游戏启动暂不可用
 ##### UI库使用由zhiyiYo开发的qt-fluent-ui
 ##### 模块化工作已完成，下次将把数据的存储介质改为json
+##### 体验GUI请运行LMC.py，否则运行console.py
 ##### (不想de启动游戏的bug呜呜呜
 
 # THE END
