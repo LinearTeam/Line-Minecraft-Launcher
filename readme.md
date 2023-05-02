@@ -9,7 +9,6 @@
 #### 3.JsonDownloader 版本JSON下载器以及versions文件夹枝叶建立
 #### 4.Loader 游戏加载器
 #### 5.MicrosoftLogin 微软正版登录验证模块
-#### 6.publicpath.txt 公共路径.\project-line
 #
 ### FOLDER USERDATA
 #### 1.downloadsource 下载源
@@ -24,7 +23,7 @@
 #### GUI文件及资源
 
 ### 另外，注意事宜如下：
-##### 请手动在.\project-line的根目录下创建.minecraft文件夹
+##### 请手动创建.minecraft文件夹
 ##### 启动游戏暂不可用/23.5.2
 ##### GUI已添加测试版，但还无法正常使用
 ##### 如果您想要使用line-python-core来开发启动器，敬请期待官网教程
