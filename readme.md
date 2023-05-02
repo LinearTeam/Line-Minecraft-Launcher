@@ -23,8 +23,15 @@
 ### 另外，注意事宜如下：
 ##### 本启动器的主程序暂未编写
 ##### 不可启动Fabric/Forge moded的版本
-##### 要测试core中的模块，请更改mcdir,javaw,logincategory,version,publicpath等文件中的信息
+##### 要测试core中的模块，请更改mcdir,javaw,logincategory,version等文件中的信息
 ##### 请手动在.\project-line的根目录下创建.minecraft文件夹
+##### 启动游戏暂不可用/23.5.2
+##### GUI已添加测试版，但还无法正常使用
 ##### 如果您想要使用line-python-core来开发启动器，敬请期待官网教程
+
+### 日志
+##### 游戏启动暂不可用
+##### UI库使用由zhiyiYo开发的qt-fluent-ui
+##### (不想de启动游戏的bug呜呜呜
 
 # THE END
