@@ -1,4 +1,0 @@
-[20:05:29] [main/WARN]: Failed to add PDH Counter: \Paging File(_Total)\% Usage, Error code: 0xC0000BB8
-[20:05:29] [main/WARN]: Failed to add counter for PDH counter: \Paging File(_Total)\% Usage
-[20:05:29] [main/WARN]: Disabling further attempts to query Paging File.
-[20:05:37] [main/WARN]: COM exception: Invalid Query: SELECT PERCENTUSAGE FROM Win32_PerfRawData_PerfOS_PagingFile
