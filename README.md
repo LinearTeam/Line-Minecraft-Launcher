@@ -6,8 +6,6 @@ Line Minecraft Launcher(LMC or LMCL) is a Minecraft Launcher written in Python.(
 
 LMC supports run as a terminal or a GUI. GUI based on PyQt5.
 
-Compared to other third-party Minecraft launchers, LMC may be larger and slower, but we are committed to giving you a better experience.
-
 LMC provided all of Minecraft Launcher cores, included: Microsoft Login module, Launcher module, multi-threads downloader & Json downloader... You are free to use these modules to create your own launcher.
 
 ## License
