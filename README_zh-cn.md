@@ -6,7 +6,6 @@ Line Minecraft Launcher（LMC或LMCL）是一个用Python编写的 Minecraft 启
 
 LMC支持以终端或GUI方式运行。GUI基于PyQt5。
 
-与其他第三方Minecraft启动器相比，LMC可能更大、更慢，但我们致力于为您提供更好的体验。
 
 LMC提供了所有的Minecraft启动器核心，包括： 微软登录模块，启动模块，多线程下载器和Json下载器... 你可以自由使用这些模块来创建你自己的启动器。
 
