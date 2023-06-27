@@ -1,220 +1,135 @@
-import getpass
-import os
-from requests import post 
-from requests import get
-from json import loads
-from json import dumps
-import webbrowser
+from pkg_resources import get_supported_platform
+import requests
+import json
 
+def get_auth_token(auth_code):
+    ret = json.loads(requests.post(
+        url="https://login.live.com/oauth20_token.srf",
+        data={
+            "client_id": "00000000402b5328",
+            "code": auth_code,
+            "grant_type": "authorization_code",
+            "redirect_uri": "https://login.live.com/oauth20_desktop.srf",
+            "scope": "service::user.auth.xboxlive.com::MBI_SSL"
+        },
+        headers={"Content-Type": "application/x-www-form-urlencoded"}
+    ).text)
+    return ret["access_token"]
+
+def refresh_auth_token(refresh_token):
+    ret = json.loads(requests.post(
+        url="https://login.live.com/oauth20_token.srf",
+        data={
+            "client_id": "00000000402b5328",
+            "code": refresh_token,
+            "grant_type": "refresh_token",
+            "redirect_uri": "https://login.live.com/oauth20_desktop.srf",
+            "scope": "service::user.auth.xboxlive.com::MBI_SSL"
+        },
+        headers={"Content-Type": "application/x-www-form-urlencoded"}
+    ).text)
+    return ret["refresh_token"]
+
+def xbl_auth(access_token):
+    ret = json.loads(requests.post(
+        url="https://user.auth.xboxlive.com/user/authenticate",
+        data={
+            "Properties": {
+                "AuthMethod": "RPS",
+                "SiteName": "user.auth.xboxlive.com",
+                "RpsTicket": f'd={access_token}'
+            },
+            "RelyingParty": "http://auth.xboxlive.com",
+            "TokenType": "JWT"
+        },
+        headers={
+            "Content-Type": "application/json",
+            "Accept": "application/json"
+        }
+    ).text)
+    xbl_token = ret["Token"]
+    user_hash = ret["DisplayClaims"]["xui"]["uhs"]
+    return (xbl_token, user_hash)
+
+def xsts_auth(xbl_token):
+    ret = json.loads(requests.post(
+        url="https://xsts.auth.xboxlive.com/xsts/authorize", 
+        data={
+            "Properties": {
+                "SandboxId": "RETAIL",
+                "UserTokens": [xbl_token]
+            },
+            "RelyingParty": "rp://api.minecraftservices.com/",
+            "TokenType": "JWT"
+        }, 
+        headers={
+        "Content-Type": "application/json",
+        "Accept": "application/json"
+        }
+    ).text)
+    xsts_token = ret["Token"]
+    return xsts_token
+
+def get_jwt(user_hash, xsts_token):
+    ret = json.loads(requests.post(
+        url="https://api.minecraftservices.com/authentication/login_with_xbox", 
+        data={"identityToken": f"XBL3.0 x={user_hash};{xsts_token}"}
+    ).text)
+    return ret["access_token"]
+
+def check_if_own_game(jwt):
+    ret = requests.get(
+        url = "https://api.minecraftservices.com/entitlements/mcstore", 
+        headers={"Authorization": f"Bearer {jwt}"}
+    ).text
+    if ret == "" :
+        return False
+    else:
+        return True
+
+def get_user_info(jwt):
+    ret = json.loads(requests.get(
+        url="https://api.minecraftservices.com/minecraft/profile", 
+        headers={"Authorization": f"Bearer {jwt}"}
+    ).text)
+    uuid = ret["id"]
+    user_name = ret["name"]
+    return (uuid, user_name)
+
+
+# under is
+# TODO
+
+def get_access_token(auth_code):
+    access_token = get_auth_token(auth_code)
+    xbl_token, user_hash = xbl_auth(access_token)
+    xsts_token = xsts_auth(xbl_token)
+    jwt = get_jwt(user_hash, xsts_token)
+    if not check_if_own_game(jwt):
+        return {}
+    uuid, user_name = get_user_info(jwt)
+    
+    return {
+        "username": user_name,
+        "uuid": uuid,
+        "access_token": jwt
+    }
 def resp(code, refreshtoken):
     if code is None:
-        return refresh(refreshtoken)
+        return refresh_auth_token(refreshtoken)
     else:
-        return getAccessToken(code)
-        
-def getAccessToken(code):
-    osname = getpass.getuser()
-    data = {
-        "client_id": "00000000402b5328", # 还是Minecraft客户端id
-        "code": code, # 第一步中获取的代码
-        "grant_type": "authorization_code",
-        "redirect_uri": "https://login.live.com/oauth20_desktop.srf",
-        "scope": "service::user.auth.xboxlive.com::MBI_SSL"
-    }#请求的数据
-    url = "https://login.live.com/oauth20_token.srf"
-    header = {
-        "Content-Type": "application/x-www-form-urlencoded"
-    }#请求头
-
-    res = post(url=url, data=data, headers=header)
-    dic = loads(res.text)
-    access_token = dic["access_token"]
-    newRefreshToken = dic["refresh_token"]
-    data = {
-        "Properties": {
-            "AuthMethod": "RPS",
-            "SiteName": "user.auth.xboxlive.com",
-            "RpsTicket": access_token # 第二步中获取的访问令牌
-        },
-        "RelyingParty": "http://auth.xboxlive.com",
-        "TokenType": "JWT"
-    }
-    url = "https://user.auth.xboxlive.com/user/authenticate"
-    header = {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-    }
-    data = dumps(data)
-    res = post(url=url, data=data, headers=header)
-    Token = loads(res.text)["Token"]
-    uhs = str()
-    for i in loads(res.text)["DisplayClaims"]["xui"]:
-        uhs = i["uhs"]
-    data = dumps({
-        "Properties": {
-            "SandboxId": "RETAIL",
-            "UserTokens": [
-                Token
-            ]
-        },
-        "RelyingParty": "rp://api.minecraftservices.com/",
-        "TokenType": "JWT"
-    })
-    url = "https://xsts.auth.xboxlive.com/xsts/authorize"
-    header = {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-    }
-    res = post(url=url, data=data, headers=header)
-    dic = loads(res.text)
-    XSTS_token = dic["Token"]
-    data = dumps({
-        "identityToken": "XBL3.0 x=" + uhs + ";" + XSTS_token
-    })
-    url = "https://api.minecraftservices.com/authentication/login_with_xbox"
-    res = post(url=url, data=data)
-    dic = loads(res.text)
-    jwt = dic["access_token"]#jwt token,也就是Minecraft访问令牌
-
-    header = {
-        "Authorization": "Bearer " + jwt
-    }
-    res = get(url = "https://api.minecraftservices.com/entitlements/mcstore", headers=header)
-    if(res.text == ""):
-        return {}
-    else:
-        header = {
-            "Authorization": "Bearer " + jwt
-        }
-        res = get(url="https://api.minecraftservices.com/minecraft/profile", headers=header)
-        dic = loads(res.text)
-        requestUser = dic["name"]#用户名
-        uuid = dic["id"]#uuid
-        indexContent = [requestUser, newRefreshToken]
-        Writer(indexContent, osname)
-        return {
-            "username": requestUser,
-            "uuid": uuid,
-            "access_token": jwt
-        }
-        
-def refresh(refreshtoken):
-    osname = getpass.getuser()
-    data = {
-        "client_id": "00000000402b5328", # 还是Minecraft客户端id
-        "refresh_token": refreshtoken, # 第一步中获取的代码
-        "grant_type": "refresh_token",
-        "redirect_uri": "https://login.live.com/oauth20_desktop.srf",
-        "scope": "service::user.auth.xboxlive.com::MBI_SSL"
-    }#请求的数据
-    url = "https://login.live.com/oauth20_token.srf"
-    header = {
-        "Content-Type": "application/x-www-form-urlencoded"
-    }#请求头
-
-    res = post(url=url, data=data, headers=header)
-    dic = loads(res.text)
-    access_token = dic["access_token"]
-    newRefreshToken = dic["refresh_token"]
-    data = {
-        "Properties": {
-            "AuthMethod": "RPS",
-            "SiteName": "user.auth.xboxlive.com",
-            "RpsTicket": access_token # 第二步中获取的访问令牌
-        },
-        "RelyingParty": "http://auth.xboxlive.com",
-        "TokenType": "JWT"
-    }
-    url = "https://user.auth.xboxlive.com/user/authenticate"
-    header = {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-    }
-    data = dumps(data)
-    res = post(url=url, data=data, headers=header)
-    Token = loads(res.text)["Token"]
-    uhs = str()
-    for i in loads(res.text)["DisplayClaims"]["xui"]:
-        uhs = i["uhs"]
-    data = dumps({
-        "Properties": {
-            "SandboxId": "RETAIL",
-            "UserTokens": [
-                Token
-            ]
-        },
-        "RelyingParty": "rp://api.minecraftservices.com/",
-        "TokenType": "JWT"
-    })
-    url = "https://xsts.auth.xboxlive.com/xsts/authorize"
-    header = {
-        "Content-Type": "application/json",
-        "Accept": "application/json"
-    }
-    res = post(url=url, data=data, headers=header)
-    dic = loads(res.text)
-    XSTS_token = dic["Token"]
-    data = dumps({
-        "identityToken": "XBL3.0 x=" + uhs + ";" + XSTS_token
-    })
-    url = "https://api.minecraftservices.com/authentication/login_with_xbox"
-    res = post(url=url, data=data)
-    dic = loads(res.text)
-    jwt = dic["access_token"]#jwt token,也就是Minecraft访问令牌
-
-    header = {
-        "Authorization": "Bearer " + jwt
-    }
-    res = get(url = "https://api.minecraftservices.com/entitlements/mcstore", headers=header)
-    if(res.text == ""):
-        return {}
-    else:
-        header = {
-            "Authorization": "Bearer " + jwt
-        }
-        res = get(url="https://api.minecraftservices.com/minecraft/profile", headers=header)
-        dic = loads(res.text)
-        requestUser = dic["name"]#用户名
-        uuid = dic["id"]#uuid
-        indexContent = [requestUser, newRefreshToken]
-        Writer(indexContent, osname)
-        return {
-            "username": requestUser,
-            "uuid": uuid,
-            "access_token": jwt
-        }
-        
-def Writer(content, osname):
-        f = open("C:\\Users\\" + osname + "\\linemc\\login\\userIndex.txt", 'r', encoding='utf-8')
-        detect = f.read()
-        f.close()
-        detect = detect.split("\n")
-        if content[0] in detect:
-            f = open("C:\\Users\\" + osname + "\\linemc\\login\\tokens\\" + content[0] + ".txt", 'w+', encoding='utf-8')
-            f.write(content[1])
-            f.close()
-        else:
-            f = open("C:\\Users\\" + osname + "\\linemc\\login\\userIndex.txt", 'a+', encoding='utf-8')
-            f.write("\n" + content[0])
-            f.close()
-            f = open("C:\\Users\\" + osname + "\\linemc\\login\\tokens\\" + content[0] + ".txt", 'w+', encoding='utf-8')
-            f.write(content[1])
-            f.close()
-            
+        return get_access_token(code)
 def judge():
-    
-    osname = getpass.getuser()
-    
     username = input("loginto")
     
-    f = open("C:\\Users\\" + osname + "\\linemc\\login\\userIndex.txt", 'r', encoding='utf-8')
+    f = open(f"{line_root_folder}\\login\\userIndex.txt", 'r', encoding='utf-8')
     detect = f.read()
     f.close()
     
     detect = detect.split("\n")
     if username in detect:
         code = None
-        f = open("C:\\Users\\" + osname + "\\linemc\\login\\tokens\\" + username + ".txt", 'r', encoding='utf-8')
+        f = open(f"{line_root_folder}\\login\\tokens\\" + username + ".txt", 'r', encoding='utf-8')
         refreshtoken = f.read()
         f.close()
         resp(code, refreshtoken)

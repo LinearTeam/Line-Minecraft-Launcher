@@ -1,10 +1,8 @@
 import ctypes
 import sys
 import os
-import getpass
 import webbrowser
 import requests
-from json import loads
 
 rp = os.getcwd() + "\\LineCore"
 sys.path.append(rp)
