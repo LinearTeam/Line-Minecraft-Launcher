@@ -36,9 +36,4 @@ def start_server():
     server = HTTPServer((address, port), LocalServer)
     server.serve_forever()
     return LocalServer.get_response_data()
-
-def check_internet_connection():
-    import os
- 
-    res = os.system("ping baidu.com -n 1")
-    return True if res == 0 else False
+    
