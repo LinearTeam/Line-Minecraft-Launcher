@@ -18,7 +18,7 @@ Please download the stable version of LMC, unstable version may will crash with 
 if you want to be a Developer of LMC, it's time to start paying attention.
 You need these things for basiclly development:
 * Python Development Environment(Recommended 3.8.9)
-* A editor(Recommanded Visual Studio Code)
+* An editor(Recommanded Visual Studio Code)
 * LMC core source file
 * Development guide of LMC Core
 
