@@ -187,7 +187,7 @@ class LineMinecraftLauncher(AcrylicWindow, LineMainUI):
         
     def update_user(self):
         self.User = self.LaunchingAccountsSelector.currentText()
-        self.Logger.Safe(("User has been set to {User}, he(her) logged by {UserType}").format(User=self.User, UserType = self.LatestLoadedData['UserType']))
+        self.Logger.Safe(("User has been set to {User}, he(she) logged by {UserType}").format(User=self.User, UserType = self.LatestLoadedData['UserType']))
         
     def read_users(self):
         try:
@@ -226,7 +226,7 @@ class LineMinecraftLauncher(AcrylicWindow, LineMainUI):
         self.MinecraftDirectory = Directory
         self.msgbox_handler(['成功!', '目录已添加'])
         self.IOController.write_new_minecraft_directory(Dir = Directory, Flag = Flag)
-        self.Logger.Safe(("Called {What}, the directory located at {Where} has been added").foramt(What = Flag, Where = Directory))
+        self.Logger.Safe(("Called {What}, the directory located at {Where} has been added").format(What = Flag, Where = Directory))
         
     def update_memory_label(self):
         self.MemorySizeDisplay.setText(str(self.MemoryAdjuster.value()) + "M")
