@@ -22,6 +22,9 @@ LMC提供了所有的Minecraft启动器核心，包括： 微软登录模块，�
 * LMC核心源文件
 * 启动器开发指南
 
+## Line 下载器(使用 `Rust` 编写的异步下载器)
+参见：https://github.com/IloveEi/Line-Downloader
+
 ## 语言
 LMC目前只支持简体中文（中国）和英文（美国），你可以上传更多的语言包，前提是你遵循开发手册。
 
