@@ -1,0 +1,15 @@
+<RCC>
+  <qresource prefix="Icons">
+    <file>../Icons/MaterialSymbolsLightSearch.svg</file>
+    <file>../Icons/LogosJava.svg</file>
+    <file>../Icons/IcBaselinePerson.svg</file>
+    <file>../Icons/LMC.ico</file>
+    <file>../Icons/MaterialSymbolsLightAddShoppingCart.svg</file>
+    <file>../Icons/MaterialSymbolsLightDashboardCustomize.svg</file>
+    <file>../Icons/MaterialSymbolsLightHelp.svg</file>
+    <file>../Icons/MaterialSymbolsLightJumpToElement.svg</file>
+    <file>../Icons/MaterialSymbolsLightNotificationImportant.svg</file>
+    <file>../Icons/MdiMicrosoft.svg</file>
+    <file>../Icons/MdiServer.svg</file>
+  </qresource>
+</RCC>

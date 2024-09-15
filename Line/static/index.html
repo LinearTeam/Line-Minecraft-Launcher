@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Line Minecraft Launcher</title>
+    <style>
+        body {
+            margin: 0;
+            height: 100vh;
+            background-image: url('./Background.png');
+            background-repeat: repeat; /* 平铺背景 */
+            background-size: cover; /* 覆盖整个背景 */
+            background-position: center; /* 居中显示 */
+        }
+        body {
+            font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        #status {
+            background: relative;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            margin: 20px auto;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        .progress-container {
+            width: 100%;
+            background: #ddd;
+            border-radius: 8px;
+            margin: 20px auto;
+        }
+        .progress-bar {
+            height: 20px;
+            width: 0;
+            background: hsl(247, 54%, 61%);
+            border-radius: 8px;
+            transition: width 0.5s;
+        }
+        .progress-text {
+            text-align: center;
+            margin-top: 25px;
+            position: relative;
+            color: #333;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #000000;
+        }
+    </style>
+    <script>
+        let lastTime = 0;
+        let lastBytes = 0;
+
+        async function fetchStatus() {
+            try {
+                const response = await fetch('/status');
+                if (!response.ok) {
+                    throw new Error('网络响应不正常');
+                }
+                const text = await response.text();
+                document.getElementById('status').innerText = text;
+
+                const parts = text.match(/文件总计: (\d+), 剩余文件: (\d+)/);
+                if (parts) {
+                    const total = parseInt(parts[1], 10);
+                    const remaining = parseInt(parts[2], 10);
+                    const percent = ((total - remaining) / total) * 100;
+                    document.querySelector('.progress-bar').style.width = percent + '%';
+
+                    // 显示进度百分比
+                    document.querySelector('.progress-text').innerText = `${Math.round(percent)}%`;
+                }
+            } catch (error) {
+                console.error('获取失败, 因为:', error);
+                document.getElementById('status').innerText = '获取状态错误或下载已经完成，程序已经结束，您可以关闭此页面';
+                document.querySelector('.progress-text').innerText = "100%";
+                document.querySelector('.progress-bar').style.width ='100%';
+            }
+        }
+
+        setInterval(fetchStatus, 100); // 每0.1秒刷新
+    </script>
+</head>
+<body>
+    <h1>下载状态</h1>
+    <div id="status">Loading...</div>
+    <div class="progress-container">
+        <div class="progress-bar"></div>
+    </div>
+    <div class="progress-text">0%</div>
+    <footer>
+        <p>&copy; IceCreamTeam, Line Minecraft Launcher with Rust</p>
+    </footer>
+</body>
+</html>

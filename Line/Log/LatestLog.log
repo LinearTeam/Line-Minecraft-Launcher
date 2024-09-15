@@ -1,0 +1,11 @@
+[2024-09-15 21:08:47,223][LineMinecraftLauncher.py][INFO]: A new Line Minecraft Launcher instance started
+[2024-09-15 21:08:47,456][LineMinecraftLauncher.py][WARNING]: No user or available path loaded last time
+[2024-09-15 21:08:47,462][LineMinecraftLauncher.py][ERROR]: This is not a CORRECT Minecraft Path
+Traceback (most recent call last):
+  File "f:/Coding/LineMinecraftLauncherProject/Refactor/Line/LineMinecraftLauncher.py", line 683, in scanMc
+    fs = self.generateAction()
+  File "f:/Coding/LineMinecraftLauncherProject/Refactor/Line/LineMinecraftLauncher.py", line 675, in generateAction
+    for i in os.listdir(self.minecraftDirectory + "/versions"):
+FileNotFoundError: [WinError 3] 系统找不到指定的路径。: '/versions'
+[2024-09-15 21:08:47,468][LineMinecraftLauncher.py][INFO]: Refreshing Minecraft versions list
+[2024-09-15 21:08:49,911][LineMinecraftLauncher.py][INFO]: LMC Shutdown
