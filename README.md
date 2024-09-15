@@ -23,6 +23,8 @@ To begin the development process, you will require the following:
 3. LMC core source file.
 4. LMC Core development guide.
 
+## Line Downloader(Rust Async Downloader):
+See also: https://github.com/IloveEi/Line-Downloader
 
 ## Language
 LMC currently offers support for Simplified Chinese and English (United States), with plans to extend this to include Traditional Chinese and Japanese (Japan). Language packages can be uploaded in accordance with the development guide.
