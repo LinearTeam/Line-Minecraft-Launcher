@@ -4,5 +4,6 @@
     "forcedChoiceJava": "",
     "language": "zh-cn",
     "launcherVisibility": "always",
-    "downloaderType": "python"
+    "downloaderType": "python",
+    "DownloadSrc": "BMCLAPI"
 }

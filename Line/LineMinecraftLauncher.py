@@ -6,7 +6,6 @@ import json
 import os
 import math
 import psutil
-import threading
 
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -28,6 +27,7 @@ from qfluentwidgets import MessageBox as MsgBox
 from qfluentwidgets import setThemeColor, RoundMenu, Action
 from plyer import notification
 
+import Core.Download.host_provider #todo: HOST PROVIDER
 from Core.Auth import microsft_oauth
 from Core.Launcher import global_io_controller
 from Core.Download.json_manifest_downloader import LJsonManifestDownload

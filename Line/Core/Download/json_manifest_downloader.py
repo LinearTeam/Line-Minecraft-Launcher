@@ -3,14 +3,21 @@ from json import loads
 from PyQt5.QtCore import pyqtSignal
 from PyQt5.QtCore import QThread
 
+import os
+import sys
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+
+import host_provider
+
 
 class LJsonManifestDownload(QThread):
 
     finished = pyqtSignal(dict)
 
     def __init__(self, src):
-        super(LJsonManifestDownload, self).__init__()
+        super().__init__()
         self.src = src
+        self.official_hosts = host_provider.LOfficialHosts()
 
     def run(self):
         retries = 0
@@ -18,17 +25,18 @@ class LJsonManifestDownload(QThread):
             while retries < 10:
                 try:
                     if self.src == "BMCLAPI":
-                        host = "https://bmclapi2.bangbang93.com/"
+                        provider = host_provider.LBmclApiSource()
                     else:
-                        host = "https://launchermeta.mojang.com/"
+                        provider = host_provider.LOfficialSource()
+
                     versionManifest = loads(
-                        get(url=host + "mc/game/version_manifest.json").text
+                        get(provider.versionsManifest).text
                     )
                     if self.src == "BMCLAPI":
                         for i in versionManifest["versions"]:
                             i["url"] = i["url"].replace(
-                                "https://piston-meta.mojang.com/",
-                                "https://bmclapi2.bangbang93.com/",
+                                self.official_hosts.piston,
+                                provider.hostsProvider.piston,
                             )
                         self.finished.emit(versionManifest)
                     else:

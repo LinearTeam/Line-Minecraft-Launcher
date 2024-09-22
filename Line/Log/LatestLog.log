@@ -1,11 +1,9 @@
-[2024-09-15 21:08:47,223][LineMinecraftLauncher.py][INFO]: A new Line Minecraft Launcher instance started
-[2024-09-15 21:08:47,456][LineMinecraftLauncher.py][WARNING]: No user or available path loaded last time
-[2024-09-15 21:08:47,462][LineMinecraftLauncher.py][ERROR]: This is not a CORRECT Minecraft Path
-Traceback (most recent call last):
-  File "f:/Coding/LineMinecraftLauncherProject/Refactor/Line/LineMinecraftLauncher.py", line 683, in scanMc
-    fs = self.generateAction()
-  File "f:/Coding/LineMinecraftLauncherProject/Refactor/Line/LineMinecraftLauncher.py", line 675, in generateAction
-    for i in os.listdir(self.minecraftDirectory + "/versions"):
-FileNotFoundError: [WinError 3] 系统找不到指定的路径。: '/versions'
-[2024-09-15 21:08:47,468][LineMinecraftLauncher.py][INFO]: Refreshing Minecraft versions list
-[2024-09-15 21:08:49,911][LineMinecraftLauncher.py][INFO]: LMC Shutdown
+[2024-09-22 20:21:37,926][LineMinecraftLauncher.py][INFO]: A new Line Minecraft Launcher instance started
+[2024-09-22 20:21:38,172][LineMinecraftLauncher.py][INFO]: 1 available Minecraft(s) in D:/LMC
+[2024-09-22 20:21:38,178][LineMinecraftLauncher.py][INFO]: Refreshing Minecraft versions list
+[2024-09-22 20:21:42,728][LineMinecraftLauncher.py][WARNING]: This name is existing in the Minecraft Directory which you selected in Launching page
+[2024-09-22 20:21:44,591][LineMinecraftLauncher.py][INFO]: Downloading 1.21.1 to D:/LMC
+[2024-09-22 20:21:47,227][async_downloader_with_ui.py][INFO]: Download dialog closed
+[2024-09-22 20:21:47,243][LineMinecraftLauncher.py][INFO]: 1 available Minecraft(s) in D:/LMC
+[2024-09-22 20:21:54,116][LineMinecraftLauncher.py][INFO]: Download Source has been set to BMCLAPI
+[2024-09-22 20:21:55,163][LineMinecraftLauncher.py][INFO]: LMC Shutdown

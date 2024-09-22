@@ -148,8 +148,9 @@ class LAsyncDownloader(object):
 
     def shutdown(self):
         self.pause()
-        tasks = asyncio.Task.all_tasks()
         try:
+            loop = asyncio.get_running_loop()
+            tasks = asyncio.all_tasks(loop)
             for task in tasks:
                 task.cancel()
         except Exception:

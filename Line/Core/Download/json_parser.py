@@ -1,16 +1,20 @@
 from json import dump, load
 import os
 import requests
+import sys
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
+import host_provider
 
 
 class LParsingJsons:
-    def __init__(self, mcDir, mcVer, url, customName, src="Mojang"):
+    def __init__(self, mcDir, mcVer, url, customName, src="Official"):
         self.mcDir = mcDir
         self.mcVer = mcVer
         self.parsedFiles = {}
         self.src = src
         self.url = url
         self.customName = customName
+        self.provider = host_provider.LOfficialSource() if src == "Official" else host_provider.LBmclApiSource()
 
     def download_version_json(self):
         try:
@@ -186,9 +190,8 @@ class LParsingJsons:
                     + ".jar": {
                         "url": (
                             versionJson["downloads"]["client"]["url"]
-                            if self.src == "Mojang"
-                            else "https://bmclapi2.bangbang93.com"
-                            + "/"
+                            if self.src == "Official"
+                            else self.provider.hostsProvider.piston
                             + "version/"
                             + self.mcVer
                             + "/client"
@@ -216,9 +219,8 @@ class LParsingJsons:
                     + ".jar": {
                         "url": (
                             versionJson["downloads"]["client"]["url"]
-                            if self.src == "Mojang"
-                            else "https://bmclapi2.bangbang93.com"
-                            + "/"
+                            if self.src == "Official"
+                            else self.provider.hostsProvider.piston
                             + "version/"
                             + self.mcVer
                             + "/client"
@@ -227,13 +229,13 @@ class LParsingJsons:
                     }
                 }
             )
+        officialHosts = host_provider.LOfficialHosts()
         if self.src == "BMCLAPI":
-            host = "https://bmclapi2.bangbang93.com"
             for i in self.total.values():
                 i["url"] = i["url"].replace(
-                    "https://libraries.minecraft.net", host + "/maven"
+                    officialHosts.libraries, self.provider.hostsProvider.libraries
                 )
-                i["url"] = i["url"].replace("https://piston-meta.mojang.com", host)
+                i["url"] = i["url"].replace(officialHosts.piston, self.provider.hostsProvider.piston)
             self.total = self.total
         else:
             self.total = self.total
@@ -251,18 +253,18 @@ class LParsingJsons:
                         self.mcDir + "/assets/objects/" + x["hash"][0:2] + "/" + x["hash"]
                     ] = {
                         "url": (
-                            "https://resources.download.minecraft.net/"
+                            officialHosts.resources
                             + x["hash"][0:2]
                             + "/"
                             + x["hash"]
                             if self.src == "Mojang"
-                            else host + "/assets" + "/" + x["hash"][0:2] + "/" + x["hash"]
+                            else self.provider.hostsProvider.resources + x["hash"][0:2] + "/" + x["hash"]
                         ),
                         "sha1": x["hash"],
                     }
                 self.total.update(assets)
-            except:
-                pass
+            except Exception as e:
+                print(e)
         with open(os.getcwd() + "\\Core\\api\\Rust\\downloads.json", "w") as f:
             dump(self.total, f)
         print(self.total)
