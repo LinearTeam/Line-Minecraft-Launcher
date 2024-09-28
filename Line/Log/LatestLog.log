@@ -1,9 +1,1 @@
-[2024-09-22 20:21:37,926][LineMinecraftLauncher.py][INFO]: A new Line Minecraft Launcher instance started
-[2024-09-22 20:21:38,172][LineMinecraftLauncher.py][INFO]: 1 available Minecraft(s) in D:/LMC
-[2024-09-22 20:21:38,178][LineMinecraftLauncher.py][INFO]: Refreshing Minecraft versions list
-[2024-09-22 20:21:42,728][LineMinecraftLauncher.py][WARNING]: This name is existing in the Minecraft Directory which you selected in Launching page
-[2024-09-22 20:21:44,591][LineMinecraftLauncher.py][INFO]: Downloading 1.21.1 to D:/LMC
-[2024-09-22 20:21:47,227][async_downloader_with_ui.py][INFO]: Download dialog closed
-[2024-09-22 20:21:47,243][LineMinecraftLauncher.py][INFO]: 1 available Minecraft(s) in D:/LMC
-[2024-09-22 20:21:54,116][LineMinecraftLauncher.py][INFO]: Download Source has been set to BMCLAPI
-[2024-09-22 20:21:55,163][LineMinecraftLauncher.py][INFO]: LMC Shutdown
+

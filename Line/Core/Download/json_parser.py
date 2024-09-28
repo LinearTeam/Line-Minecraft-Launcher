@@ -230,7 +230,7 @@ class LParsingJsons:
                 }
             )
         officialHosts = host_provider.LOfficialHosts()
-        if self.src == "BMCLAPI":
+        if self.src == "BmclApi":
             for i in self.total.values():
                 i["url"] = i["url"].replace(
                     officialHosts.libraries, self.provider.hostsProvider.libraries

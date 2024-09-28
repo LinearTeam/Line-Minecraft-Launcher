@@ -17,33 +17,24 @@ class LJsonManifestDownload(QThread):
     def __init__(self, src):
         super().__init__()
         self.src = src
+        print(src)
         self.official_hosts = host_provider.LOfficialHosts()
+        print("BR 1")
 
     def run(self):
         retries = 0
-        try:
-            while retries < 10:
-                try:
-                    if self.src == "BMCLAPI":
-                        provider = host_provider.LBmclApiSource()
-                    else:
-                        provider = host_provider.LOfficialSource()
-
-                    versionManifest = loads(
-                        get(provider.versionsManifest).text
-                    )
-                    if self.src == "BMCLAPI":
-                        for i in versionManifest["versions"]:
-                            i["url"] = i["url"].replace(
-                                self.official_hosts.piston,
-                                provider.hostsProvider.piston,
-                            )
-                        self.finished.emit(versionManifest)
-                    else:
-                        self.finished.emit(versionManifest)
-                    break
-                except:
-                    retries += 1
-                    continue
-        except:
-            pass
+        if self.src == "BmclApi":
+            provider = host_provider.LBmclApiSource()
+        else:
+            provider = host_provider.LOfficialSource()
+        print(provider.versionsManifest)
+        versionManifest = loads(
+            get(provider.versionsManifest).text
+        )
+                    
+        if self.src == "BmclApi":
+            for i in versionManifest["versions"]:
+                i["url"] = host_provider.LPiston(i["url"]).replace(provider.hostsProvider.piston.getPiston())
+                self.finished.emit(versionManifest)
+        else:
+            self.finished.emit(versionManifest)

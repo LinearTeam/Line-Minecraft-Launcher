@@ -17,7 +17,7 @@ if whnd != 0:
     ctypes.windll.kernel32.CloseHandle(whnd)
 ctypes.windll.shell32.SetCurrentProcessExplicitAppUserModelID("Line Minecraft Launcher")
 
-from PyQt5.QtCore import Qt, QThread
+from PyQt5.QtCore import Qt, QThread,pyqtSignal
 from PyQt5.QtWidgets import QFileDialog, QApplication
 from PyQt5.QtGui import QColor, QIcon, QPixmap
 from PyQt5.QtWidgets import QListWidgetItem
@@ -27,7 +27,6 @@ from qfluentwidgets import MessageBox as MsgBox
 from qfluentwidgets import setThemeColor, RoundMenu, Action
 from plyer import notification
 
-import Core.Download.host_provider #todo: HOST PROVIDER
 from Core.Auth import microsft_oauth
 from Core.Launcher import global_io_controller
 from Core.Download.json_manifest_downloader import LJsonManifestDownload
@@ -42,6 +41,7 @@ from Interface.Interface.Compiled.Naming import Ui_Naming as Naming
 # from Core import MicrosoftLoginProcessor
 # from Core import Downloader
 
+
 class LRustDownloader(QThread):
 
 
@@ -51,12 +51,11 @@ class LRustDownloader(QThread):
 
     def run(self):
         os.system(
-            ".\\Core\\api\\Rust\\RustAsyncDownloader.exe "
+            "start .\\Core\\api\\Rust\\RustAsyncDownloader.exe "
             + os.getcwd()
             + "\\Core\\api\\Rust\\downloads.json "
             + self.threads
         )
-
 
 
 class LLineMinecraftLauncher(AcrylicWindow, LineMainUI):
@@ -95,21 +94,22 @@ class LLineMinecraftLauncher(AcrylicWindow, LineMainUI):
 
         logging.basicConfig(
             level=logging.INFO,
-            format="[%(asctime)s][%(filename)s][%(levelname)s]: %(message)s",
+            format="[%(asctime)s][%(filename)s][%(levelname)s][%(lineno)d]: %(message)s",
             filename="./Log/LatestLog.log",
             filemode="w",
         )
+
 
         logging.info("A new Line Minecraft Launcher instance started")
 
         self.setTitleBar(StandardTitleBar(self))
         self.poper.setCurrentIndex(0)
-        Pixmap = QPixmap("./Interface/resources/Background_KeQing.jpg")
+        #Pixmap = QPixmap("./Interface/resources/Background_KeQing.jpg")
 
         with open("./Core/Shared/GlobalDirectory.json", "w") as f:
             json.dump({"Root": (os.getcwd()).replace("\\", "/")}, f)
         # 24:30
-        self.Background.setScaledContents(True)
+        #self.Background.setScaledContents(True)
         #self.Background.setPixmap(Pixmap)
         self.RefreshVersions.setIcon(FIF.UPDATE)
 
@@ -117,6 +117,7 @@ class LLineMinecraftLauncher(AcrylicWindow, LineMainUI):
         self.latestLoadedData = self.IoController.readLatestLoadedData()
         try:
             print(self.latestLoadedData)
+
             self.user = ""
             self.minecraftDirectory = ""
             self.launchVersion = ""
@@ -192,7 +193,7 @@ class LLineMinecraftLauncher(AcrylicWindow, LineMainUI):
                 for x in range(self.DownloadSourceSelector.count())
             ].index(
                 "官方源(数据最新, 速度也可能最快)"
-                if self.downloadSrc == "Mojang"
+                if self.downloadSrc == "Official"
                 else "BMCLAPI(速度快，同步快)"
             )
         )
@@ -202,7 +203,9 @@ class LLineMinecraftLauncher(AcrylicWindow, LineMainUI):
                 for x in range(self.DownloaderSelector.count())
             ].index("Python" if self.downloaderType == "python" else "Rust")
         )
+        
         self.driveDownloadManifest()
+        
 
         # 初始化导航栏
 
@@ -358,6 +361,14 @@ class LLineMinecraftLauncher(AcrylicWindow, LineMainUI):
             )
             self.Launch.setEnabled(True)
 
+    def callbackDownload(self, stat):
+        if stat == 1:
+            self.changePage(0)
+            self.msgboxHandler(["完成", "下载已经完成", "windows"])
+            self.refreshMcDir()
+        else:
+            logging.error("Something went wrong during callback download")
+
     def driveDownload(self):
         if self.stopDownload == False:
             if self.downloaderType == "python":
@@ -389,17 +400,12 @@ class LLineMinecraftLauncher(AcrylicWindow, LineMainUI):
                         self.downloadSrc,
                     ).download_version_json()
                     del total
-                    self.downloaderWithoutUI = LRustDownloader()
-                    self.downloaderWithoutUI.start()
+                    self.downloaderWithoutUi = LRustDownloader()
+                    self.downloaderWithoutUi.start()
                 else:
                     pass
             if self.downloaderType != "python":
-                while True:
-                    if self.downloaderWithoutUI.isFinished() == True:
-                        self.changePage(0)
-                        self.msgboxHandler(["完成", "下载已经完成", "windows"])
-                        self.refreshMcDir()
-                        break
+                self.changePage(0)
             else:
                 self.changePage(0)
                 self.msgboxHandler(["完成", "下载已经完成", "windows"])
@@ -440,13 +446,13 @@ class LLineMinecraftLauncher(AcrylicWindow, LineMainUI):
                             self.downloadSrc,
                         ).download_version_json()
                         del total
-                        self.downloaderWithoutUI = LRustDownloader()
-                        self.downloaderWithoutUI.start()
+                        self.downloaderWithoutUi = LRustDownloader()
+                        self.downloaderWithoutUi.start()
                     else:
                         self.changePage(6)
                 if self.downloaderType != "python":
                     while True:
-                        if self.downloaderWithoutUI.isFinished() == True:
+                        if self.downloaderWithoutUi.isFinished() == True:
                             self.changePage(0)
                             self.msgboxHandler(["完成", "下载已经完成", "windows"])
                             self.refreshMcDir()
@@ -457,6 +463,7 @@ class LLineMinecraftLauncher(AcrylicWindow, LineMainUI):
                     self.refreshMcDir()   
             else:
                 self.changePage(6)
+            self.refreshMcDir()
 
     def validationChecker(self):
         try:
@@ -584,8 +591,8 @@ class LLineMinecraftLauncher(AcrylicWindow, LineMainUI):
         logging.info("Refreshing Minecraft versions list")
         try:
             self.thread = LJsonManifestDownload(self.downloadSrc)
-            self.thread.start()
             self.thread.finished.connect(self.listMcVersions)
+            self.thread.start()
         except:
             self.msgboxHandler(
                 ["错误", "无法刷新版本，请排查：\n 1.网络未连接 \n 2.过于频繁地刷新"]
@@ -595,6 +602,7 @@ class LLineMinecraftLauncher(AcrylicWindow, LineMainUI):
             )
 
     def listMcVersions(self, VersionsManifest):
+        print("callback")
         self.classify = {"release": {}, "snapshot": {}, "oldBeta": {}, "oldAlpha": {}}
         for i in VersionsManifest["versions"]:
             if i["type"] == "release":
@@ -656,7 +664,7 @@ class LLineMinecraftLauncher(AcrylicWindow, LineMainUI):
 
     def setupDownloadSrc(self):
         self.downloadSrc = (
-            "Mojang" if self.DownloadSourceSelector.currentIndex() == 0 else "BMCLAPI"
+            "Official" if self.DownloadSourceSelector.currentIndex() == 0 else "BmclApi"
         )
         logging.info(f"Download Source has been set to {self.downloadSrc}")
         self.IoController.overwriteSettings("DownloadSrc", self.downloadSrc)
