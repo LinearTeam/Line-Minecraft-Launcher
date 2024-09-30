@@ -72,7 +72,7 @@ class LParsingJsons:
 
             return self.parsingVersionJson()
         except Exception as e:
-            print(f"下载失败: {filePath}, 错误: {e}")
+            print(f"下载失败: {filePath}, 错误: {e.with_traceback()}")
 
     def parsingVersionJson(self):
         natives = []
@@ -220,7 +220,7 @@ class LParsingJsons:
                         "url": (
                             versionJson["downloads"]["client"]["url"]
                             if self.src == "Official"
-                            else self.provider.hostsProvider.piston
+                            else self.provider.hostsProvider.piston.getPiston()
                             + "version/"
                             + self.mcVer
                             + "/client"
@@ -229,13 +229,13 @@ class LParsingJsons:
                     }
                 }
             )
-        officialHosts = host_provider.LOfficialHosts()
+        
         if self.src == "BmclApi":
             for i in self.total.values():
-                i["url"] = i["url"].replace(
-                    officialHosts.libraries, self.provider.hostsProvider.libraries
+                i["url"] = host_provider.LLibraries(i["url"]).replace(
+                    self.provider.hostsProvider.libraries.getLibraries()
                 )
-                i["url"] = i["url"].replace(officialHosts.piston, self.provider.hostsProvider.piston)
+                i["url"] = host_provider.LPiston(i["url"]).replace(self.provider.hostsProvider.piston.getPiston())
             self.total = self.total
         else:
             self.total = self.total
@@ -253,18 +253,16 @@ class LParsingJsons:
                         self.mcDir + "/assets/objects/" + x["hash"][0:2] + "/" + x["hash"]
                     ] = {
                         "url": (
-                            officialHosts.resources
+                            self.provider.hostsProvider.resources.getResources()
                             + x["hash"][0:2]
                             + "/"
                             + x["hash"]
-                            if self.src == "Mojang"
-                            else self.provider.hostsProvider.resources + x["hash"][0:2] + "/" + x["hash"]
                         ),
                         "sha1": x["hash"],
                     }
                 self.total.update(assets)
             except Exception as e:
-                print(e)
+                print(e.with_traceback())
         with open(os.getcwd() + "\\Core\\api\\Rust\\downloads.json", "w") as f:
             dump(self.total, f)
         print(self.total)
