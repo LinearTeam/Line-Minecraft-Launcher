@@ -667,7 +667,7 @@ class LLineMinecraftLauncher(AcrylicWindow, LineMainUI):
             "Official" if self.DownloadSourceSelector.currentIndex() == 0 else "BmclApi"
         )
         logging.info(f"Download Source has been set to {self.downloadSrc}")
-        self.IoController.overwriteSettings("DownloadSrc", self.downloadSrc)
+        self.IoController.overwriteSettings("downloadSrc", self.downloadSrc)
 
     def refreshMcDir(self):
         self.minecraftDirectory = self.MinecraftPathSelector.currentText()

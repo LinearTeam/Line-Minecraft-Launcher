@@ -1,73 +1,61 @@
-import json
-
-
-
 class LPiston:
 
     def __init__(self, url):
-#        self.officialField = LOfficialHosts()
         self.url = url
 
     def getPiston(self):
-        print(self.url)
         return self.url
     
     def replace(self, replacedHost: str):
-        return self.url.replace(LBmclApiHosts().piston.getPiston(), replacedHost)
+        return self.url.replace("https://piston-meta.mojang.com/", replacedHost)
 
 class LLauncherMeta:
     def __init__(self, url):
-        #LOfficialHosts() = LOfficialHosts()
         self.url = url
     
     def getLauncherMeta(self):
         return self.url
     
     def replace(self, replacedHost: str):
-        return self.url.replace(LOfficialHosts().launcherMeta.getLauncherMeta(), replacedHost)
+        return self.url.replace("https://launchermeta.mojang.com/", replacedHost)
     
 class LLauncher:
     def __init__(self, url):
-        #LOfficialHosts() = LOfficialHosts()
         self.url = url
     
     def getLauncher(self):
         return self.url
     
     def replace(self, replacedHost: str):
-        return self.url.replace(LOfficialHosts().launcher.getLauncher(), replacedHost)
+        return self.url.replace("https://launcher.mojang.com/", replacedHost)
 
 class LResources:
     def __init__(self, url):
-        #LOfficialHosts() = LOfficialHosts()
         self.url = url
     
     def getResources(self):
         return self.url
     
     def replace(self, replacedHost: str):
-        return self.url.replace(LOfficialHosts().resources.getResources(), replacedHost)
+        return self.url.replace("https://resources.download.minecraft.net/", replacedHost)
     
 class LLibraries:
     def __init__(self, url):
-        #LOfficialHosts() = LOfficialHosts()
         self.url = url
     
     def getLibraries(self):
         return self.url
     
     def replace(self, replacedHost: str):
-        return self.url.replace(LOfficialHosts().libraries.getLibraries(), replacedHost)
+        return self.url.replace("https://libraries.minecraft.net/", replacedHost)
 
 class LOfficialHosts:
     def __init__(self) -> None:
-        print("initializing")
         self.piston = LPiston("https://piston-meta.mojang.com/")
         self.launcherMeta = LLauncherMeta("https://launchermeta.mojang.com/")
         self.launcher =  LLauncher("https://launcher.mojang.com/")
         self.resources = LResources("https://resources.download.minecraft.net/")
         self.libraries = LLibraries("https://libraries.minecraft.net/")
-        print("finished")
 
 class LOfficialSource:
     def __init__(self) -> None:
