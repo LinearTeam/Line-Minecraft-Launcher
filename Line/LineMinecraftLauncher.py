@@ -181,7 +181,7 @@ class LLineMinecraftLauncher(AcrylicWindow, LineMainUI):
 
         # Setup settings
         self.DownloadSourceSelector.addItems(
-            ["官方源(数据最新, 速度也可能最快)", "BMCLAPI(速度快，同步快)"]
+            ["官方源(数据最新, 速度也可能最快)", "BMCLAPI(速度快，同步快)", "Line Mirror(测试中，速度一般，同步较慢)"]
         )
         self.DownloaderSelector.addItems(["Python", "Rust"])
         self.settings = self.IoController.readSettings()
@@ -194,7 +194,8 @@ class LLineMinecraftLauncher(AcrylicWindow, LineMainUI):
             ].index(
                 "官方源(数据最新, 速度也可能最快)"
                 if self.downloadSrc == "Official"
-                else "BMCLAPI(速度快，同步快)"
+                else "BMCLAPI(速度快，同步快)" if self.downloadSrc == "BmclApi"
+                else "Line Mirror(测试中，速度一般，同步较慢)"
             )
         )
         self.DownloaderSelector.setCurrentIndex(
@@ -664,7 +665,7 @@ class LLineMinecraftLauncher(AcrylicWindow, LineMainUI):
 
     def setupDownloadSrc(self):
         self.downloadSrc = (
-            "Official" if self.DownloadSourceSelector.currentIndex() == 0 else "BmclApi"
+            "Official" if self.DownloadSourceSelector.currentIndex() == 0 else "BmclApi" if self.DownloadSourceSelector.currentIndex() == 1 else "LineMirror"
         )
         logging.info(f"Download Source has been set to {self.downloadSrc}")
         self.IoController.overwriteSettings("downloadSrc", self.downloadSrc)

@@ -7,7 +7,7 @@ class LPiston:
         return self.url
     
     def replace(self, replacedHost: str):
-        return self.url.replace("https://piston-meta.mojang.com/", replacedHost)
+        return self.url.replace("https://piston-meta.mojang.com/", replacedHost).replace("https://piston-data.mojang.com/", replacedHost)
 
 class LLauncherMeta:
     def __init__(self, url):
@@ -77,3 +77,16 @@ class LBmclApiSource:
         self.hostsProvider = LBmclApiHosts()
         self.versionsManifest = f"{self.hostsProvider.piston.getPiston()}mc/game/version_manifest.json"
 
+class LLineMirrorHosts:
+    def __init__(self) -> None:
+        self.piston = LPiston("https://lm.icecreamteam.win:440/launcher/")
+        self.launcherMeta = LLauncherMeta("https://lm.icecreamteam.win:440/launchermeta/")
+        self.launcher =  LLauncher("https://lm.icecreamteam.win:440/launcher/")
+        self.resources = LResources("https://lm.icecreamteam.win:440/assets/")
+        self.libraries = LLibraries("https://lm.icecreamteam.win:440/libraries/")
+
+class LLineMirrorSource:
+    def __init__(self) -> None:
+        self.name = "LineMirror"
+        self.hostsProvider = LLineMirrorHosts()
+        self.versionsManifest = "https://lm.icecreamteam.win:440/mc/game/version_manifest.json"

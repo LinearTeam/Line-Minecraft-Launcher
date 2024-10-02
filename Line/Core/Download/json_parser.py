@@ -14,7 +14,7 @@ class LParsingJsons:
         self.src = src
         self.url = url
         self.customName = customName
-        self.provider = host_provider.LOfficialSource() if src == "Official" else host_provider.LBmclApiSource()
+        self.provider = host_provider.LOfficialSource() if src == "Official" else host_provider.LBmclApiSource() if src == "BmclApi" else host_provider.LLineMirrorSource()
 
     def download_version_json(self):
         try:
@@ -191,7 +191,7 @@ class LParsingJsons:
                         "url": (
                             versionJson["downloads"]["client"]["url"]
                             if self.src == "Official"
-                            else self.provider.hostsProvider.piston
+                            else self.provider.hostsProvider.piston.getPiston()
                             + "version/"
                             + self.mcVer
                             + "/client"
@@ -220,7 +220,7 @@ class LParsingJsons:
                         "url": (
                             versionJson["downloads"]["client"]["url"]
                             if self.src == "Official"
-                            else self.provider.hostsProvider.piston.getPiston()
+                            else self.provider.hostsProvider.piston.getPiston() if self.src == "BmclApi" else self.provider.hostsProvider.piston.replace(versionJson["downloads"]["client"]["url"])
                             + "version/"
                             + self.mcVer
                             + "/client"

@@ -22,6 +22,8 @@ class LJsonManifestDownload(QThread):
     def run(self):
         if self.src == "BmclApi":
             provider = host_provider.LBmclApiSource()
+        elif self.src == "LineMirror":
+            provider = host_provider.LLineMirrorSource()
         else:
             provider = host_provider.LOfficialSource()
         print(provider.versionsManifest)
