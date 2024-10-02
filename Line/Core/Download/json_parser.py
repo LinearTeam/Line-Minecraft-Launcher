@@ -191,10 +191,7 @@ class LParsingJsons:
                         "url": (
                             versionJson["downloads"]["client"]["url"]
                             if self.src == "Official"
-                            else self.provider.hostsProvider.piston.getPiston()
-                            + "version/"
-                            + self.mcVer
-                            + "/client"
+                            else host_provider.LPiston(versionJson["downloads"]["client"]["url"]).replace(self.provider.hostsProvider.piston.getPiston())
                         ),
                         "sha1": versionJson["downloads"]["client"]["sha1"],
                     },
@@ -220,17 +217,14 @@ class LParsingJsons:
                         "url": (
                             versionJson["downloads"]["client"]["url"]
                             if self.src == "Official"
-                            else self.provider.hostsProvider.piston.getPiston() if self.src == "BmclApi" else self.provider.hostsProvider.piston.replace(versionJson["downloads"]["client"]["url"])
-                            + "version/"
-                            + self.mcVer
-                            + "/client"
+                            else host_provider.LPiston(versionJson["downloads"]["client"]["url"]).replace(self.provider.hostsProvider.piston.getPiston())
                         ),
                         "sha1": versionJson["downloads"]["client"]["sha1"],
                     }
                 }
             )
         
-        if self.src == "BmclApi":
+        if self.src != "Official":
             for i in self.total.values():
                 i["url"] = host_provider.LLibraries(i["url"]).replace(
                     self.provider.hostsProvider.libraries.getLibraries()

@@ -1,1 +1,14 @@
-
+[2024-10-02 20:01:58,195][LineMinecraftLauncher.py][INFO][103]: A new Line Minecraft Launcher instance started
+[2024-10-02 20:01:58,205][LineMinecraftLauncher.py][ERROR][710]: This is not a CORRECT Minecraft Path
+Traceback (most recent call last):
+  File "f:/ClonedLine/Line-Minecraft-Launcher/Line/LineMinecraftLauncher.py", line 692, in scanMc
+    fs = self.generateAction()
+  File "f:/ClonedLine/Line-Minecraft-Launcher/Line/LineMinecraftLauncher.py", line 684, in generateAction
+    for i in os.listdir(self.minecraftDirectory + "/versions"):
+FileNotFoundError: [WinError 3] 系统找不到指定的路径。: 'D:/LMC/.minecraft/versions'
+[2024-10-02 20:01:58,211][LineMinecraftLauncher.py][INFO][592]: Refreshing Minecraft versions list
+[2024-10-02 20:02:03,147][LineMinecraftLauncher.py][INFO][376]: Downloading 1.21.1 to D:/LMC/.minecraft
+[2024-10-02 20:04:07,539][async_downloader_with_ui.py][INFO][100]: Downloading finished, 3948 in total, 3948 file(s) succeed, 0 files(s) failed
+[2024-10-02 20:04:08,937][async_downloader_with_ui.py][INFO][82]: Download dialog closed
+[2024-10-02 20:04:08,947][LineMinecraftLauncher.py][INFO][708]: 1 available Minecraft(s) in D:/LMC/.minecraft
+[2024-10-02 20:04:17,868][LineMinecraftLauncher.py][INFO][64]: LMC Shutdown

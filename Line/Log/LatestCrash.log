@@ -1,0 +1,27 @@
+Line Minecraft Launcher has crashed.
+Date:2024-10-02 20:00:53.395726
+ExceptType:<class 'PermissionError'>
+ExceptValue:[WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:/LMC/.minecraft/versions/1.21.1/1.21.1.jar'
+TraceBack:Traceback (most recent call last):
+
+  File "f:\ClonedLine\Line-Minecraft-Launcher\Line\Core\Download\async_downloader_with_ui.py", line 34, in run
+    asyncio.run(self.main())
+
+  File "F:\Python\lib\asyncio\runners.py", line 44, in run
+    return loop.run_until_complete(main)
+
+  File "F:\Python\lib\asyncio\base_events.py", line 616, in run_until_complete
+    return future.result()
+
+  File "f:\ClonedLine\Line-Minecraft-Launcher\Line\Core\Download\async_downloader_with_ui.py", line 29, in main
+    await self.asyncDownloader.main(self.files)
+
+  File "f:\ClonedLine\Line-Minecraft-Launcher\Line\Core\Download\async_downloader.py", line 138, in main
+    await asyncio.gather(*tasks)
+
+  File "f:\ClonedLine\Line-Minecraft-Launcher\Line\Core\Download\async_downloader.py", line 73, in downloadFile
+    os.remove(dest)
+
+PermissionError: [WinError 32] 另一个程序正在使用此文件，进程无法访问。: 'D:/LMC/.minecraft/versions/1.21.1/1.21.1.jar'
+
+

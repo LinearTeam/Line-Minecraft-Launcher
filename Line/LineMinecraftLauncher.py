@@ -603,7 +603,6 @@ class LLineMinecraftLauncher(AcrylicWindow, LineMainUI):
             )
 
     def listMcVersions(self, VersionsManifest):
-        print("callback")
         self.classify = {"release": {}, "snapshot": {}, "oldBeta": {}, "oldAlpha": {}}
         for i in VersionsManifest["versions"]:
             if i["type"] == "release":

@@ -26,12 +26,11 @@ class LJsonManifestDownload(QThread):
             provider = host_provider.LLineMirrorSource()
         else:
             provider = host_provider.LOfficialSource()
-        print(provider.versionsManifest)
         versionManifest = loads(
             get(provider.versionsManifest).text
         )
                     
-        if self.src == "BmclApi":
+        if self.src != "Official":
             for i in versionManifest["versions"]:
                 i["url"] = host_provider.LPiston(i["url"]).replace(provider.hostsProvider.piston.getPiston())
             self.finished.emit(versionManifest)
